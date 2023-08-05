@@ -26,34 +26,30 @@ const information = AssignReviewerWorkflow.addStep(
       description: "Assign a reviewer randomly",
       fields: {
         elements: [{
-          name: "doer_of_good_deeds",
-          title: "Whose deeds are deemed worthy of a kudo?",
-          description: "Recognizing such deeds is dazzlingly desirable of you!",
-          type: Schema.slack.types.user_id,
-        }, {
-          name: "kudo_channel",
-          title: "Where should this message be shared?",
-          type: Schema.slack.types.channel_id,
-        }, {
-          name: "kudo_message",
-          title: "What would you like to say?",
-          type: Schema.types.string,
-          long: true,
-        }, {
-          name: "kudo_vibe",
-          title: 'What is this kudo\'s "vibe"?',
-          description: "What sorts of energy is given off?",
-          type: Schema.types.string,
-          enum: [
-            "Appreciation for someone 🫂",
-            "Celebrating a victory 🏆",
-            "Thankful for great teamwork ⚽️",
-            "Amazed at awesome work ☄️",
-            "Excited for the future 🎉",
-            "No vibes, just plants 🪴",
-          ],
+            name: "workers",
+            title: "Assigned to",
+            description: "The users that the task was assigned to. These users won't be asked to review this task.", 
+            type: Schema.types.array, 
+            items: {
+                title: "User ID",
+                type: Schema.slack.types.user_id,
+            }, 
+        },
+        {
+            name: "description",
+            title: "Review Description",
+            description: "The task that the reviewer should review in plain text.",
+            type: Schema.types.string,
+            long: true,
+        },
+        {
+            name: "extra_info",
+            title: "Extra information",
+            description: "Is there any extra information the reviewer shoud know?",
+            type: Schema.types.string,
+            long: true,
         }],
-        required: ["doer_of_good_deeds", "kudo_channel", "kudo_message"],
+        required: ["workers", "description"],
       },
     },
   );
