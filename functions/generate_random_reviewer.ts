@@ -1,3 +1,4 @@
+// function
 import { DefineFunction, Schema } from "deno-slack-sdk/mod.ts";
 import { SlackFunction } from "deno-slack-sdk/mod.ts";
 
