@@ -48,7 +48,13 @@ export default SlackFunction(
 
         // Remove workers from users group so that workers can't be their own reviewer
         workers.forEach(worker => {
-            users.splice(users.indexOf(worker), 1);
+            const index = users.indexOf(worker);
+
+            if(index !== -1) {
+                users.splice(index, 1);
+            } else {
+                console.log(`Given worker: ${worker} doesn't exist in the user group: ${user_group}.`);
+            }
         });
 
         // Generate a random reviewer
