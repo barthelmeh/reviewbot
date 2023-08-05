@@ -1,4 +1,6 @@
 import { Manifest } from "deno-slack-sdk/mod.ts";
+import { AssignReviewerWorkflow } from "./workflows/assign_reviewer.ts";
+import { GenerateReviewer } from "./functions/generate_random_reviewer.ts";
 
 /**
  * The app manifest contains the app's configuration. This
@@ -6,11 +8,11 @@ import { Manifest } from "deno-slack-sdk/mod.ts";
  * https://api.slack.com/future/manifest
  */
 export default Manifest({
-  name: "review-bot",
+  name: "ReviewBot",
   description: "A simple bot designed to automatically assign reviewers.",
   icon: "assets/default_new_app_icon.png",
-  functions: [],
-  workflows: [],
+  functions: [GenerateReviewer],
+  workflows: [AssignReviewerWorkflow],
   outgoingDomains: [],
-  botScopes: ["commands", "chat:write", "chat:write.public"],
+  botScopes: ["commands", "chat:write", "chat:write.public", "usergroups:read"],
 });

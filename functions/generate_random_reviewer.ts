@@ -12,13 +12,13 @@ export const GenerateReviewer = DefineFunction({
             workers: {
               type: Schema.types.array,
               description: "The users that worked on the story required for a review. These users won't be asked to be reviewed.",
-            },
-            user_group: {
-                type: Schema.slack.types.usergroup_id,
-                description: "The user group to choose a reviewer from"
+              items: {
+                title: "User ID",
+                type: Schema.slack.types.user_id,
+              }, 
             }
           },
-          required: ["workers", "user_group"],
+          required: ["workers"],
     },
     output_parameters: {
         properties: {
@@ -34,12 +34,30 @@ export const GenerateReviewer = DefineFunction({
 export default SlackFunction(
     GenerateReviewer, 
     async ({ inputs, client, token }) => {
-        const { workers, user_group } = inputs;
+        const { workers } = inputs;
+
+        // Get the usergroup
+        const user_group_resp = await client.usergroups.list({
+            token: token
+        });
+
+        if(!user_group_resp.ok) {
+            console.log("Error during request for usergroups!", user_group_resp.error);
+        }
+
+        const usergroups = user_group_resp.usergroups;
+        let team_group_id = "";
+
+        usergroups.forEach((element: any) => {
+            if(element.handle === "team") {
+                team_group_id = element.id as string;
+            }
+        });
 
         // Get list of users in the given group
         const users_in_group = await client.usergroups.users.list({
             token: token,
-            usergroup: user_group,
+            usergroup: team_group_id,
         });
 
         if(!users_in_group.ok) {
@@ -54,7 +72,7 @@ export default SlackFunction(
             if(index !== -1) {
                 users.splice(index, 1);
             } else {
-                console.log(`Given worker: ${worker} doesn't exist in the user group: ${user_group}.`);
+                console.log(`Given worker: ${worker} doesn't exist in the team.`);
             }
         });
 

@@ -46,12 +46,6 @@ const information = AssignReviewerWorkflow.addStep(
             }, 
         },
         {
-            name: "user_group",
-            title: "Possible Reviewers",
-            description: "The group of possible reviewers (team800)",
-            type: Schema.slack.types.usergroup_id,
-        },
-        {
             name: "description",
             title: "Review Description",
             description: "The task that the reviewer should review in plain text.",
@@ -65,7 +59,7 @@ const information = AssignReviewerWorkflow.addStep(
             type: Schema.types.string,
             long: true,
         }],
-        required: ["workers", "user_group", "description"],
+        required: ["workers", "description"],
       },
     },
   );
@@ -73,7 +67,6 @@ const information = AssignReviewerWorkflow.addStep(
 /* Step 2. Generate the reviewer user_id */
 const reviewer_id = AssignReviewerWorkflow.addStep(GenerateReviewer, {
     workers: information.outputs.fields.workers,
-    user_group: information.outputs.fields.user_group,
   });
 
 /* Step 3. Mention the generated reviewer */
