@@ -58,6 +58,10 @@ export default SlackFunction(
             }
         });
 
+        if(users.length === 0) {
+            console.log(`There are no users to select for a review!`);
+        }
+
         // Generate a random reviewer
         const reviewer = users[Math.floor(Math.random() * users.length)];
 
