@@ -7,7 +7,7 @@ import { Manifest } from "deno-slack-sdk/mod.ts";
  */
 export default Manifest({
   name: "review-bot",
-  description: "A blank template for building Slack apps with Deno",
+  description: "A simple bot designed to automatically assign reviewers.",
   icon: "assets/default_new_app_icon.png",
   functions: [],
   workflows: [],
