@@ -82,6 +82,4 @@ AssignReviewerWorkflow.addStep(TagReviewer, {
     caller: AssignReviewerWorkflow.inputs.interactivity.interactor.id,
 });
 
-
-
 export { AssignReviewerWorkflow };
