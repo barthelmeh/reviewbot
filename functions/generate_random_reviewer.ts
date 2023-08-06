@@ -43,6 +43,7 @@ export default SlackFunction(
 
         if(!user_group_resp.ok) {
             console.log("Error during request for usergroups!", user_group_resp.error);
+            return { error: "Error during request for usergroups" }
         }
 
         const usergroups = user_group_resp.usergroups;
@@ -54,6 +55,8 @@ export default SlackFunction(
             }
         });
 
+        console.log(`Gotten team_group_id: ${team_group_id}`);
+
         // Get list of users in the given group
         const users_in_group = await client.usergroups.users.list({
             token: token,
@@ -62,6 +65,7 @@ export default SlackFunction(
 
         if(!users_in_group.ok) {
             console.log("Error during request for users in group!", users_in_group.error);
+            return { error: "Error during request for users in group" }
         }
         const users = users_in_group.users;
 
@@ -73,16 +77,23 @@ export default SlackFunction(
                 users.splice(index, 1);
             } else {
                 console.log(`Given worker: ${worker} doesn't exist in the team.`);
+                return { error: "Given worker doesn't exist in the team." }
             }
         });
 
+        // Remove Carl from the team
+        users.splice(users.indexOf("U04TA23P8CT"), 1);
+
         if(users.length === 0) {
             console.log(`There are no users to select for a review!`);
+            return { error: "There are no users left to select for a review!" }
         }
 
         // Generate a random reviewer
         const reviewer = users[Math.floor(Math.random() * users.length)];
 
-        return { outputs : reviewer };
+        console.log(`Generated a reviewer. Number of users left: ${users.length}`);
+
+        return { outputs : { reviewer } };
 });
 

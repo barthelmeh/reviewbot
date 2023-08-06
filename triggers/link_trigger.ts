@@ -12,10 +12,7 @@ const link_trigger: Trigger<typeof AssignReviewerWorkflow.definition> = {
             value: TriggerContextData.Shortcut.interactivity,
         },
         channel_id: {
-            value: "C05JUQ6A3EG",
-        },
-        caller: {
-            value: TriggerContextData.Shortcut.user_id,
+            value: TriggerContextData.Shortcut.channel_id,
         }
     }};
 
